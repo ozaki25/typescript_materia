@@ -2,21 +2,36 @@
 <html>
   <head>
     <title>サンプル</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
     <script src="../../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="./main.js"></script>
   </head>
   <body>
-    <table>
-      <thead>
-        <tr>
-          <th>商品名</th>
-          <th>値段</th>
-          <th>在庫数</th>
-          <th>保管場所</th>
-        </tr>
-      </thead>
-      <tbody id="contents">
-      </tbody>
-    </table>
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Typescript Sample</a>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+          <table class="table table-condensed table-striped">
+            <thead>
+              <tr>
+                <th>商品名</th>
+                <th>値段</th>
+                <th>在庫数</th>
+                <th>保管場所</th>
+              </tr>
+            </thead>
+            <tbody id="contents">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
