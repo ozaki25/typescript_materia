@@ -26,14 +26,15 @@
             stationeryList.push(new Stationery_1.Stationery("消しゴム", 100, 500, "埼玉"));
         }
         function renderIndex() {
-            $("#contents").empty();
+            $("#main").html(stationeryTable());
             stationeryList.forEach(function (stationery, index) {
                 console.log(stationery);
                 $("#contents").append(stationery.toHtml(index));
             });
+            $("#main").append(newStationeryButton());
         }
         function renderNew() {
-            $("#main").html("<form class=\"form-horizontal\">" +
+            $("#main").html("<form id=\"stationery_form\" class=\"form-horizontal\">" +
                 "<div class=\"form-group\">" +
                 "<label class=\"col-sm-2 control-label\">商品名</label>" +
                 "<div class=\"col-sm-10\">" +
@@ -55,15 +56,34 @@
                 "<div class=\"form-group\">" +
                 "<label class=\"col-sm-2 control-label\">保管場所</label>" +
                 "<div class=\"col-sm-10\">" +
-                "<input type=\"text\" class=\"form-control\" id=\"location\">" +
+                "<input type=\"text\" class=\"form-control\" name=\"location\">" +
                 "</div>" +
                 "</div>" +
                 "<div class=\"form-group\">" +
                 "<div class=\"col-sm-offset-2 col-sm-10\">" +
-                "<button id=\"submit\" class=\"btn btn-default\">作成</button>" +
+                "<a id=\"submit_stationery\" class=\"btn btn-default\">作成</a>" +
                 "</div>" +
                 "</div>" +
                 "</form>");
+        }
+        function stationeryTable() {
+            return "<table id=\"stationeryTable\" class=\"table table-condensed table-striped\">" +
+                "<thead>" +
+                "<tr>" +
+                "<th>商品名</th>" +
+                "<th>値段</th>" +
+                "<th>在庫数</th>" +
+                "<th>保管場所</th>" +
+                "<th></th>" +
+                "<th></th>" +
+                "</tr>" +
+                "</thead>" +
+                "<tbody id=\"contents\">" +
+                "</tbody>" +
+                "</table>";
+        }
+        function newStationeryButton() {
+            return "<a id=\"new_stationery\" class=\"btn btn-default\" href=\"#\">新規作成</a>";
         }
         $(document).on("click", ".receive", function () {
             var id = $(this).data("stationery-id");
@@ -77,6 +97,17 @@
         });
         $(document).on("click", "#new_stationery", function () {
             renderNew();
+        });
+        $(document).on("click", "#submit_stationery", function () {
+            var brandName = $("input[name='brandName']").val();
+            var price = $("input[name='price']").val();
+            var quantity = $("input[name='quantity']").val();
+            var location = $("input[name='location']").val();
+            var stationery = new Stationery_1.Stationery(brandName, price, quantity, location);
+            stationeryList.push(stationery);
+            console.log(stationery);
+            console.log(stationeryList);
+            renderIndex();
         });
     });
 });
