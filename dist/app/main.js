@@ -12,7 +12,15 @@
     var Stationery_1 = require("./stationery/Stationery");
     $(function () {
         var stationeryList = [
-            new Stationery_1.Stationery("鉛筆", 100, 500, "東京")
+            new Stationery_1.Stationery("鉛筆", 100, 500, "東京"),
+            new Stationery_1.Stationery("鉛筆", 100, 500, "千葉"),
+            new Stationery_1.Stationery("鉛筆", 100, 500, "埼玉"),
+            new Stationery_1.Stationery("ノート", 100, 500, "東京"),
+            new Stationery_1.Stationery("ノート", 100, 500, "千葉"),
+            new Stationery_1.Stationery("ノート", 100, 500, "埼玉"),
+            new Stationery_1.Stationery("消しゴム", 100, 500, "東京"),
+            new Stationery_1.Stationery("消しゴム", 100, 500, "千葉"),
+            new Stationery_1.Stationery("消しゴム", 100, 500, "埼玉")
         ];
         stationeryList.forEach(function (stationery) {
             $("#contents").append("<tr><td>" + stationery.brandName + "</td><td>" + stationery.price + "</td><td>" + stationery.quantity + "</td><td>" + stationery.location + "</td></tr>");
