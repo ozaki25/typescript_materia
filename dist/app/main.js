@@ -11,19 +11,36 @@
     var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
     var Stationery_1 = require("./stationery/Stationery");
     $(function () {
-        var stationeryList = [
-            new Stationery_1.Stationery("鉛筆", 100, 500, "東京"),
-            new Stationery_1.Stationery("鉛筆", 100, 500, "千葉"),
-            new Stationery_1.Stationery("鉛筆", 100, 500, "埼玉"),
-            new Stationery_1.Stationery("ノート", 100, 500, "東京"),
-            new Stationery_1.Stationery("ノート", 100, 500, "千葉"),
-            new Stationery_1.Stationery("ノート", 100, 500, "埼玉"),
-            new Stationery_1.Stationery("消しゴム", 100, 500, "東京"),
-            new Stationery_1.Stationery("消しゴム", 100, 500, "千葉"),
-            new Stationery_1.Stationery("消しゴム", 100, 500, "埼玉")
-        ];
-        stationeryList.forEach(function (stationery) {
-            $("#contents").append(stationery.toHtml());
+        var stationeryList = [];
+        setDefaultStationery();
+        render();
+        function setDefaultStationery() {
+            stationeryList.push(new Stationery_1.Stationery("鉛筆", 100, 500, "東京"));
+            stationeryList.push(new Stationery_1.Stationery("鉛筆", 100, 500, "千葉"));
+            stationeryList.push(new Stationery_1.Stationery("鉛筆", 100, 500, "埼玉"));
+            stationeryList.push(new Stationery_1.Stationery("ノート", 100, 500, "東京"));
+            stationeryList.push(new Stationery_1.Stationery("ノート", 100, 500, "千葉"));
+            stationeryList.push(new Stationery_1.Stationery("ノート", 100, 500, "埼玉"));
+            stationeryList.push(new Stationery_1.Stationery("消しゴム", 100, 500, "東京"));
+            stationeryList.push(new Stationery_1.Stationery("消しゴム", 100, 500, "千葉"));
+            stationeryList.push(new Stationery_1.Stationery("消しゴム", 100, 500, "埼玉"));
+        }
+        function render() {
+            $("#contents").empty();
+            stationeryList.forEach(function (stationery, index) {
+                console.log(stationery);
+                $("#contents").append(stationery.toHtml(index));
+            });
+        }
+        $(document).on("click", ".receive", function () {
+            var id = $(this).data("stationery-id");
+            stationeryList[id].receive();
+            render();
+        });
+        $(document).on("click", ".shipment", function () {
+            var id = $(this).data("stationery-id");
+            stationeryList[id].shipment();
+            render();
         });
     });
 });
@@ -45,8 +62,21 @@
             this.quantity = quantity;
             this.location = location;
         }
-        Stationery.prototype.toHtml = function () {
-            return "<tr><td>" + this.brandName + "</td><td>" + this.price + "</td><td>" + this.quantity + "</td><td>" + this.location + "</td></tr>";
+        Stationery.prototype.toHtml = function (id) {
+            return "<tr>" +
+                "<td>" + this.brandName + "</td>" +
+                "<td>" + this.price + "</td>" +
+                "<td>" + this.quantity + "</td>" +
+                "<td>" + this.location + "</td>" +
+                "<td><a data-stationery-id=\"" + id + "\" class=\"btn btn-default btn-xs receive\" href=\"#\">入荷</a></td>" +
+                "<td><a data-stationery-id=\"" + id + "\" class=\"btn btn-default btn-xs shipment\" href=\"#\">出荷</a></td>" +
+                "</tr>";
+        };
+        Stationery.prototype.receive = function () {
+            this.quantity += 100;
+        };
+        Stationery.prototype.shipment = function () {
+            this.quantity -= 100;
         };
         return Stationery;
     })();
