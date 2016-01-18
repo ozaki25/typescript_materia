@@ -23,7 +23,7 @@
             new Stationery_1.Stationery("消しゴム", 100, 500, "埼玉")
         ];
         stationeryList.forEach(function (stationery) {
-            $("#contents").append("<tr><td>" + stationery.brandName + "</td><td>" + stationery.price + "</td><td>" + stationery.quantity + "</td><td>" + stationery.location + "</td></tr>");
+            $("#contents").append(stationery.toHtml());
         });
     });
 });
@@ -45,6 +45,9 @@
             this.quantity = quantity;
             this.location = location;
         }
+        Stationery.prototype.toHtml = function () {
+            return "<tr><td>" + this.brandName + "</td><td>" + this.price + "</td><td>" + this.quantity + "</td><td>" + this.location + "</td></tr>";
+        };
         return Stationery;
     })();
     exports.Stationery = Stationery;

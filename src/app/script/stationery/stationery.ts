@@ -10,4 +10,8 @@ export class Stationery {
         this.quantity = quantity;
         this.location = location;
     }
+
+    toHtml(): string {
+        return "<tr><td>" + this.brandName + "</td><td>" + this.price + "</td><td>" + this.quantity + "</td><td>" + this.location + "</td></tr>"
+    }
 }

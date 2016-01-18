@@ -15,6 +15,6 @@ $(() => {
      ];
 
     stationeryList.forEach(stationery => {
-        $("#contents").append("<tr><td>" + stationery.brandName + "</td><td>" + stationery.price + "</td><td>" + stationery.quantity + "</td><td>" + stationery.location + "</td></tr>");
+        $("#contents").append(stationery.toHtml());
     });
 });
