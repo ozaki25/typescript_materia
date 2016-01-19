@@ -23,10 +23,10 @@ export class Stationery {
     }
 
     receive(): void {
-        this.quantity += 100;
+        this.quantity += 10;
     }
 
     shipment(): void {
-        this.quantity -= 100;
+        this.quantity -= 10;
     }
 }
