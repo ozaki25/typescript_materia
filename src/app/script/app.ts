@@ -24,7 +24,6 @@ $(() => {
             console.log(stationery);
             $("#contents").append(stationery.toHtml(index));
         });
-        $("#main").append(newStationeryButton());
     }
 
     function renderNew() {
@@ -56,7 +55,7 @@ $(() => {
                 "</div>" +
                 "<div class=\"form-group\">" +
                 "<div class=\"col-sm-offset-2 col-sm-10\">" +
-                "<a id=\"submit_stationery\" class=\"btn btn-default\">作成</a>" +
+                "<button id=\"submit_stationery\" class=\"btn btn-default\">作成</button>" +
                 "</div>" +
                 "</div>" +
                 "</form>"
@@ -80,10 +79,6 @@ $(() => {
             "</table>"
     }
 
-    function newStationeryButton(): string {
-        return "<a id=\"new_stationery\" class=\"btn btn-default\" href=\"#\">新規作成</a>"
-    }
-
     $(document).on("click", ".receive", function() {
         var id: number = $(this).data("stationery-id");
         stationeryList[id].receive();
@@ -102,13 +97,11 @@ $(() => {
 
     $(document).on("click", "#submit_stationery", function() {
         var brandName: string = $("input[name='brandName']").val();
-        var price: number = $("input[name='price']").val();
-        var quantity: number = $("input[name='quantity']").val();
+        var price: number = parseInt($("input[name='price']").val());
+        var quantity: number = parseInt($("input[name='quantity']").val());
         var location: string = $("input[name='location']").val();
         var stationery: Stationery = new Stationery(brandName, price, quantity, location);
         stationeryList.push(stationery);
-        console.log(stationery);
-        console.log(stationeryList);
         renderIndex();
     });
 });
