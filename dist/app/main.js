@@ -32,12 +32,18 @@
                 $("#contents").append(Template_1.Template.StationeryTableRow(index, stationery));
             });
         }
-        function renderNew() {
+        function renderNew(stationery) {
             $("#main").html(Template_1.Template.StationeryForm);
             Item_1.Item.columns.forEach(function (item) {
                 $("#stationery_form").append(Template_1.Template.StationeryFormItem(item));
             });
             $("#stationery_form").append(Template_1.Template.StationeryFormSubmit);
+            if (stationery) {
+                $("input[name='brandName']").val(stationery.brandName);
+                $("input[name='price']").val(stationery.price);
+                $("input[name='quantity']").val(stationery.quantity);
+                $("input[name='location']").val(stationery.location);
+            }
         }
         $(document).on("click", ".receive", function () {
             var id = $(this).data("stationery-id");
@@ -66,7 +72,7 @@
                 renderIndex();
             }
             else {
-                renderNew();
+                renderNew(stationery.setDefault());
             }
         });
     });
@@ -113,10 +119,17 @@
         }
         Stationery.prototype.valid = function () {
             return !!this.brandName.trim() && !!this.price && !!this.quantity && !!this.location.trim();
-            return true;
         };
-        Stationery.prototype.blank = function (column) {
-            return column.trim();
+        Stationery.prototype.setDefault = function () {
+            if (!this.brandName.trim())
+                this.brandName = "";
+            if (!this.price)
+                this.price = 0;
+            if (!this.quantity)
+                this.quantity = 0;
+            if (!this.location.trim())
+                this.location = "";
+            return this;
         };
         Stationery.prototype.receive = function () {
             this.quantity += 10;

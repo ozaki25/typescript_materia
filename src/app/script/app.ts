@@ -26,12 +26,18 @@ $(() => {
         });
     }
 
-    function renderNew() {
+    function renderNew(stationery?: Stationery) {
         $("#main").html(Template.StationeryForm);
         Item.columns.forEach(item => {
             $("#stationery_form").append(Template.StationeryFormItem(item));
         });
         $("#stationery_form").append(Template.StationeryFormSubmit);
+        if(stationery) {
+            $("input[name='brandName']").val(stationery.brandName);
+            $("input[name='price']").val(stationery.price);
+            $("input[name='quantity']").val(stationery.quantity);
+            $("input[name='location']").val(stationery.location);
+        }
     }
 
     $(document).on("click", ".receive", function() {
@@ -64,7 +70,7 @@ $(() => {
             stationeryList.push(stationery);
             renderIndex();
         } else {
-            renderNew();
+            renderNew(stationery.setDefault());
         }
     });
 });
