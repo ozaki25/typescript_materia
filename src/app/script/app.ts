@@ -1,6 +1,7 @@
 import * as $ from "jquery";
 import {Stationery} from "./stationery/Stationery";
 import {Template} from "./stationery/Template";
+import {Item} from "./stationery/Item";
 
 $(() => {
     var stationeryList: Stationery[] = [];
@@ -29,6 +30,10 @@ $(() => {
 
     function renderNew() {
         $("#main").html(Template.StationeryForm);
+        Item.items.forEach(item => {
+            $("#stationery_form").append(Template.StationeryFormItem(item));
+        });
+        $("#stationery_form").append(Template.StationeryFormSubmit);
     }
 
     $(document).on("click", ".receive", function() {

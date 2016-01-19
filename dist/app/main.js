@@ -5,12 +5,13 @@
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "jquery", "./stationery/Stationery", "./stationery/Template"], factory);
+        define(["require", "exports", "jquery", "./stationery/Stationery", "./stationery/Template", "./stationery/Item"], factory);
     }
 })(function (require, exports) {
     var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
     var Stationery_1 = require("./stationery/Stationery");
     var Template_1 = require("./stationery/Template");
+    var Item_1 = require("./stationery/Item");
     $(function () {
         var stationeryList = [];
         setDefaultStationery();
@@ -35,6 +36,10 @@
         }
         function renderNew() {
             $("#main").html(Template_1.Template.StationeryForm);
+            Item_1.Item.items.forEach(function (item) {
+                $("#stationery_form").append(Template_1.Template.StationeryFormItem(item));
+            });
+            $("#stationery_form").append(Template_1.Template.StationeryFormSubmit);
         }
         $(document).on("click", ".receive", function () {
             var id = $(this).data("stationery-id");
@@ -65,7 +70,27 @@
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./stationery/Stationery":2,"./stationery/Template":3}],2:[function(require,module,exports){
+},{"./stationery/Item":2,"./stationery/Stationery":3,"./stationery/Template":4}],2:[function(require,module,exports){
+(function (factory) {
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        var v = factory(require, exports); if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === 'function' && define.amd) {
+        define(["require", "exports"], factory);
+    }
+})(function (require, exports) {
+    var Item;
+    (function (Item) {
+        Item.items = [
+            { ja: "商品名", en: "brandName" },
+            { ja: "値段", en: "price" },
+            { ja: "在庫数", en: "quantity" },
+            { ja: "保管場所", en: "location" }
+        ];
+    })(Item = exports.Item || (exports.Item = {}));
+});
+
+},{}],3:[function(require,module,exports){
 (function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
@@ -102,7 +127,7 @@
     exports.Stationery = Stationery;
 });
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 (function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
@@ -128,36 +153,20 @@
             "</tbody>" +
             "</table>";
         Template.StationeryForm = "<form id=\"stationery_form\" class=\"form-horizontal\">" +
-            "<div class=\"form-group\">" +
-            "<label class=\"col-sm-2 control-label\">商品名</label>" +
-            "<div class=\"col-sm-10\">" +
-            "<input type=\"text\" class=\"form-control\" name=\"brandName\">" +
-            "</div>" +
-            "</div>" +
-            "<div class=\"form-group\">" +
-            "<label class=\"col-sm-2 control-label\">値段</label>" +
-            "<div class=\"col-sm-10\">" +
-            "<input type=\"text\" class=\"form-control\" name=\"price\">" +
-            "</div>" +
-            "</div>" +
-            "<div class=\"form-group\">" +
-            "<label class=\"col-sm-2 control-label\">在庫数</label>" +
-            "<div class=\"col-sm-10\">" +
-            "<input type=\"text\" class=\"form-control\" name=\"quantity\">" +
-            "</div>" +
-            "</div>" +
-            "<div class=\"form-group\">" +
-            "<label class=\"col-sm-2 control-label\">保管場所</label>" +
-            "<div class=\"col-sm-10\">" +
-            "<input type=\"text\" class=\"form-control\" name=\"location\">" +
-            "</div>" +
-            "</div>" +
-            "<div class=\"form-group\">" +
+            "</form>";
+        Template.StationeryFormSubmit = "<div class=\"form-group\">" +
             "<div class=\"col-sm-offset-2 col-sm-10\">" +
             "<button id=\"submit_stationery\" class=\"btn btn-default\">作成</button>" +
             "</div>" +
-            "</div>" +
-            "</form>";
+            "</div>";
+        Template.StationeryFormItem = function (item) {
+            return "<div class=\"form-group\">" +
+                "<label class=\"col-sm-2 control-label\">" + item.ja + "</label>" +
+                "<div class=\"col-sm-10\">" +
+                "<input type=\"text\" class=\"form-control\" name=\"" + item.en + "\">" +
+                "</div>" +
+                "</div>";
+        };
     })(Template = exports.Template || (exports.Template = {}));
 });
 
