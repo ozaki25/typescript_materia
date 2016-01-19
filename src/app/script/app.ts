@@ -22,7 +22,7 @@ $(() => {
             $("#stationeryTable > thead > tr").append(Template.StationeryTableHeader(column));
         });
         stationeryList.forEach((stationery, index) => {
-            $("#contents").append(Template.StationeryTableBody(index, stationery));
+            $("#contents").append(Template.StationeryTableRow(index, stationery));
         });
     }
 
@@ -59,7 +59,12 @@ $(() => {
         var price: number = parseInt($("input[name='price']").val());
         var quantity: number = parseInt($("input[name='quantity']").val());
         var location: string = $("input[name='location']").val();
-        stationeryList.push(new Stationery(brandName, price, quantity, location));
-        renderIndex();
+        var stationery = new Stationery(brandName, price, quantity, location);
+        if(stationery.valid()) {
+            stationeryList.push(stationery);
+            renderIndex();
+        } else {
+            renderNew();
+        }
     });
 });

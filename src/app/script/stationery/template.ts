@@ -13,7 +13,7 @@ export namespace Template {
 
     export let StationeryTableHeader = (column): string => "<th>" + column.ja + "</th>"
 
-    export let StationeryTableBody = (id, stationery): string => {
+    export let StationeryTableRow = (id, stationery): string => {
         return "<tr>" +
                  "<td>" + stationery.brandName + "</td>" +
                  "<td>" + stationery.price + "</td>" +

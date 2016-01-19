@@ -29,7 +29,7 @@
                 $("#stationeryTable > thead > tr").append(Template_1.Template.StationeryTableHeader(column));
             });
             stationeryList.forEach(function (stationery, index) {
-                $("#contents").append(Template_1.Template.StationeryTableBody(index, stationery));
+                $("#contents").append(Template_1.Template.StationeryTableRow(index, stationery));
             });
         }
         function renderNew() {
@@ -60,8 +60,14 @@
             var price = parseInt($("input[name='price']").val());
             var quantity = parseInt($("input[name='quantity']").val());
             var location = $("input[name='location']").val();
-            stationeryList.push(new Stationery_1.Stationery(brandName, price, quantity, location));
-            renderIndex();
+            var stationery = new Stationery_1.Stationery(brandName, price, quantity, location);
+            if (stationery.valid()) {
+                stationeryList.push(stationery);
+                renderIndex();
+            }
+            else {
+                renderNew();
+            }
         });
     });
 });
@@ -105,6 +111,13 @@
             this.quantity = quantity;
             this.location = location;
         }
+        Stationery.prototype.valid = function () {
+            return !!this.brandName.trim() && !!this.price && !!this.quantity && !!this.location.trim();
+            return true;
+        };
+        Stationery.prototype.blank = function (column) {
+            return column.trim();
+        };
         Stationery.prototype.receive = function () {
             this.quantity += 10;
         };
@@ -138,7 +151,7 @@
             "</tbody>" +
             "</table>";
         Template.StationeryTableHeader = function (column) { return "<th>" + column.ja + "</th>"; };
-        Template.StationeryTableBody = function (id, stationery) {
+        Template.StationeryTableRow = function (id, stationery) {
             return "<tr>" +
                 "<td>" + stationery.brandName + "</td>" +
                 "<td>" + stationery.price + "</td>" +
