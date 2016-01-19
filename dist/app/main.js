@@ -17,26 +17,24 @@
         setDefaultStationery();
         renderIndex();
         function setDefaultStationery() {
-            stationeryList.push(new Stationery_1.Stationery("鉛筆", 100, 500, "東京"));
-            stationeryList.push(new Stationery_1.Stationery("鉛筆", 100, 500, "千葉"));
-            stationeryList.push(new Stationery_1.Stationery("鉛筆", 100, 500, "埼玉"));
-            stationeryList.push(new Stationery_1.Stationery("ノート", 100, 500, "東京"));
-            stationeryList.push(new Stationery_1.Stationery("ノート", 100, 500, "千葉"));
-            stationeryList.push(new Stationery_1.Stationery("ノート", 100, 500, "埼玉"));
-            stationeryList.push(new Stationery_1.Stationery("消しゴム", 100, 500, "東京"));
-            stationeryList.push(new Stationery_1.Stationery("消しゴム", 100, 500, "千葉"));
-            stationeryList.push(new Stationery_1.Stationery("消しゴム", 100, 500, "埼玉"));
+            Item_1.Item.brandNames.forEach(function (brandName) {
+                Item_1.Item.locations.forEach(function (location) {
+                    stationeryList.push(new Stationery_1.Stationery(brandName, 100, 500, location));
+                });
+            });
         }
         function renderIndex() {
             $("#main").html(Template_1.Template.StationeryTable);
+            Item_1.Item.columns.forEach(function (column) {
+                $("#stationeryTable > thead > tr").append(Template_1.Template.StationeryTableHeader(column));
+            });
             stationeryList.forEach(function (stationery, index) {
-                console.log(stationery);
-                $("#contents").append(stationery.toHtml(index));
+                $("#contents").append(Template_1.Template.StationeryTableBody(index, stationery));
             });
         }
         function renderNew() {
             $("#main").html(Template_1.Template.StationeryForm);
-            Item_1.Item.items.forEach(function (item) {
+            Item_1.Item.columns.forEach(function (item) {
                 $("#stationery_form").append(Template_1.Template.StationeryFormItem(item));
             });
             $("#stationery_form").append(Template_1.Template.StationeryFormSubmit);
@@ -62,8 +60,7 @@
             var price = parseInt($("input[name='price']").val());
             var quantity = parseInt($("input[name='quantity']").val());
             var location = $("input[name='location']").val();
-            var stationery = new Stationery_1.Stationery(brandName, price, quantity, location);
-            stationeryList.push(stationery);
+            stationeryList.push(new Stationery_1.Stationery(brandName, price, quantity, location));
             renderIndex();
         });
     });
@@ -81,12 +78,14 @@
 })(function (require, exports) {
     var Item;
     (function (Item) {
-        Item.items = [
+        Item.columns = [
             { ja: "商品名", en: "brandName" },
             { ja: "値段", en: "price" },
             { ja: "在庫数", en: "quantity" },
             { ja: "保管場所", en: "location" }
         ];
+        Item.brandNames = ["鉛筆", "ノート", "消しゴム"];
+        Item.locations = ["東京", "千葉", "埼玉"];
     })(Item = exports.Item || (exports.Item = {}));
 });
 
@@ -106,16 +105,6 @@
             this.quantity = quantity;
             this.location = location;
         }
-        Stationery.prototype.toHtml = function (id) {
-            return "<tr>" +
-                "<td>" + this.brandName + "</td>" +
-                "<td>" + this.price + "</td>" +
-                "<td>" + this.quantity + "</td>" +
-                "<td>" + this.location + "</td>" +
-                "<td><a data-stationery-id=\"" + id + "\" class=\"btn btn-default btn-xs receive\" href=\"#\">入荷</a></td>" +
-                "<td><a data-stationery-id=\"" + id + "\" class=\"btn btn-default btn-xs shipment\" href=\"#\">出荷</a></td>" +
-                "</tr>";
-        };
         Stationery.prototype.receive = function () {
             this.quantity += 10;
         };
@@ -141,10 +130,6 @@
         Template.StationeryTable = "<table id=\"stationeryTable\" class=\"table table-condensed table-striped\">" +
             "<thead>" +
             "<tr>" +
-            "<th>商品名</th>" +
-            "<th>値段</th>" +
-            "<th>在庫数</th>" +
-            "<th>保管場所</th>" +
             "<th></th>" +
             "<th></th>" +
             "</tr>" +
@@ -152,18 +137,28 @@
             "<tbody id=\"contents\">" +
             "</tbody>" +
             "</table>";
-        Template.StationeryForm = "<form id=\"stationery_form\" class=\"form-horizontal\">" +
-            "</form>";
+        Template.StationeryTableHeader = function (column) { return "<th>" + column.ja + "</th>"; };
+        Template.StationeryTableBody = function (id, stationery) {
+            return "<tr>" +
+                "<td>" + stationery.brandName + "</td>" +
+                "<td>" + stationery.price + "</td>" +
+                "<td>" + stationery.quantity + "</td>" +
+                "<td>" + stationery.location + "</td>" +
+                "<td><a data-stationery-id=\"" + id + "\" class=\"btn btn-default btn-xs receive\" href=\"#\">入荷</a></td>" +
+                "<td><a data-stationery-id=\"" + id + "\" class=\"btn btn-default btn-xs shipment\" href=\"#\">出荷</a></td>" +
+                "</tr>";
+        };
+        Template.StationeryForm = "<form id=\"stationery_form\" class=\"form-horizontal\"></form>";
         Template.StationeryFormSubmit = "<div class=\"form-group\">" +
             "<div class=\"col-sm-offset-2 col-sm-10\">" +
             "<button id=\"submit_stationery\" class=\"btn btn-default\">作成</button>" +
             "</div>" +
             "</div>";
-        Template.StationeryFormItem = function (item) {
+        Template.StationeryFormItem = function (column) {
             return "<div class=\"form-group\">" +
-                "<label class=\"col-sm-2 control-label\">" + item.ja + "</label>" +
+                "<label class=\"col-sm-2 control-label\">" + column.ja + "</label>" +
                 "<div class=\"col-sm-10\">" +
-                "<input type=\"text\" class=\"form-control\" name=\"" + item.en + "\">" +
+                "<input type=\"text\" class=\"form-control\" name=\"" + column.en + "\">" +
                 "</div>" +
                 "</div>";
         };

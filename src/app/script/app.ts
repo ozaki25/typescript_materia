@@ -9,28 +9,26 @@ $(() => {
     renderIndex();
 
     function setDefaultStationery() {
-        stationeryList.push(new Stationery("鉛筆", 100, 500, "東京"));
-        stationeryList.push(new Stationery("鉛筆", 100, 500, "千葉"));
-        stationeryList.push(new Stationery("鉛筆", 100, 500, "埼玉"));
-        stationeryList.push(new Stationery("ノート", 100, 500, "東京"));
-        stationeryList.push(new Stationery("ノート", 100, 500, "千葉"));
-        stationeryList.push(new Stationery("ノート", 100, 500, "埼玉"));
-        stationeryList.push(new Stationery("消しゴム", 100, 500, "東京"));
-        stationeryList.push(new Stationery("消しゴム", 100, 500, "千葉"));
-        stationeryList.push(new Stationery("消しゴム", 100, 500, "埼玉"));
+        Item.brandNames.forEach(brandName => {
+            Item.locations.forEach(location => {
+                stationeryList.push(new Stationery(brandName, 100, 500, location));
+            });
+        });
     }
 
     function renderIndex() {
         $("#main").html(Template.StationeryTable);
+        Item.columns.forEach(column => {
+            $("#stationeryTable > thead > tr").append(Template.StationeryTableHeader(column));
+        });
         stationeryList.forEach((stationery, index) => {
-            console.log(stationery);
-            $("#contents").append(stationery.toHtml(index));
+            $("#contents").append(Template.StationeryTableBody(index, stationery));
         });
     }
 
     function renderNew() {
         $("#main").html(Template.StationeryForm);
-        Item.items.forEach(item => {
+        Item.columns.forEach(item => {
             $("#stationery_form").append(Template.StationeryFormItem(item));
         });
         $("#stationery_form").append(Template.StationeryFormSubmit);
@@ -61,8 +59,7 @@ $(() => {
         var price: number = parseInt($("input[name='price']").val());
         var quantity: number = parseInt($("input[name='quantity']").val());
         var location: string = $("input[name='location']").val();
-        var stationery: Stationery = new Stationery(brandName, price, quantity, location);
-        stationeryList.push(stationery);
+        stationeryList.push(new Stationery(brandName, price, quantity, location));
         renderIndex();
     });
 });

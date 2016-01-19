@@ -11,10 +11,6 @@
         Template.StationeryTable = "<table id=\"stationeryTable\" class=\"table table-condensed table-striped\">" +
             "<thead>" +
             "<tr>" +
-            "<th>商品名</th>" +
-            "<th>値段</th>" +
-            "<th>在庫数</th>" +
-            "<th>保管場所</th>" +
             "<th></th>" +
             "<th></th>" +
             "</tr>" +
@@ -22,21 +18,31 @@
             "<tbody id=\"contents\">" +
             "</tbody>" +
             "</table>";
-        Template.StationeryForm = "<form id=\"stationery_form\" class=\"form-horizontal\">" +
-            "</form>";
+        Template.StationeryTableHeader = function (column) { return "<th>" + column.ja + "</th>"; };
+        Template.StationeryTableBody = function (id, stationery) {
+            return "<tr>" +
+                "<td>" + stationery.brandName + "</td>" +
+                "<td>" + stationery.price + "</td>" +
+                "<td>" + stationery.quantity + "</td>" +
+                "<td>" + stationery.location + "</td>" +
+                "<td><a data-stationery-id=\"" + id + "\" class=\"btn btn-default btn-xs receive\" href=\"#\">入荷</a></td>" +
+                "<td><a data-stationery-id=\"" + id + "\" class=\"btn btn-default btn-xs shipment\" href=\"#\">出荷</a></td>" +
+                "</tr>";
+        };
+        Template.StationeryForm = "<form id=\"stationery_form\" class=\"form-horizontal\"></form>";
         Template.StationeryFormSubmit = "<div class=\"form-group\">" +
             "<div class=\"col-sm-offset-2 col-sm-10\">" +
             "<button id=\"submit_stationery\" class=\"btn btn-default\">作成</button>" +
             "</div>" +
             "</div>";
-        Template.StationeryFormItem = function (item) {
+        Template.StationeryFormItem = function (column) {
             return "<div class=\"form-group\">" +
-                "<label class=\"col-sm-2 control-label\">" + item.ja + "</label>" +
+                "<label class=\"col-sm-2 control-label\">" + column.ja + "</label>" +
                 "<div class=\"col-sm-10\">" +
-                "<input type=\"text\" class=\"form-control\" name=\"" + item.en + "\">" +
+                "<input type=\"text\" class=\"form-control\" name=\"" + column.en + "\">" +
                 "</div>" +
                 "</div>";
         };
     })(Template = exports.Template || (exports.Template = {}));
 });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiVGVtcGxhdGUuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvYXBwL3NjcmlwdC9zdGF0aW9uZXJ5L1RlbXBsYXRlLnRzIl0sIm5hbWVzIjpbIlRlbXBsYXRlIl0sIm1hcHBpbmdzIjoiOzs7Ozs7OztJQUFBLElBQWlCLFFBQVEsQ0FvQ3hCO0lBcENELFdBQWlCLFFBQVEsRUFBQyxDQUFDO1FBQ1pBLHdCQUFlQSxHQUN0QkEsOEVBQThFQTtZQUM1RUEsU0FBU0E7WUFDUEEsTUFBTUE7WUFDSkEsY0FBY0E7WUFDZEEsYUFBYUE7WUFDYkEsY0FBY0E7WUFDZEEsZUFBZUE7WUFDZkEsV0FBV0E7WUFDWEEsV0FBV0E7WUFDWEEsT0FBT0E7WUFDVEEsVUFBVUE7WUFDVkEseUJBQXlCQTtZQUN6QkEsVUFBVUE7WUFDWkEsVUFBVUEsQ0FBQ0E7UUFFTkEsdUJBQWNBLEdBQ3JCQSx5REFBeURBO1lBQ3pEQSxTQUFTQSxDQUFDQTtRQUVIQSw2QkFBb0JBLEdBQ3pCQSw0QkFBNEJBO1lBQzFCQSwyQ0FBMkNBO1lBQ3pDQSx3RUFBd0VBO1lBQzFFQSxRQUFRQTtZQUNWQSxRQUFRQSxDQUFDQTtRQUVKQSwyQkFBa0JBLEdBQUdBLFVBQUNBLElBQUlBO1lBQ2pDQSxNQUFNQSxDQUFDQSw0QkFBNEJBO2dCQUN6QkEsMENBQTBDQSxHQUFHQSxJQUFJQSxDQUFDQSxFQUFFQSxHQUFHQSxVQUFVQTtnQkFDakVBLDJCQUEyQkE7Z0JBQ3pCQSxxREFBcURBLEdBQUdBLElBQUlBLENBQUNBLEVBQUVBLEdBQUdBLEtBQUtBO2dCQUN6RUEsUUFBUUE7Z0JBQ1ZBLFFBQVFBLENBQUNBO1FBQ3JCQSxDQUFDQSxDQUFBQTtJQUNMQSxDQUFDQSxFQXBDZ0IsUUFBUSxHQUFSLGdCQUFRLEtBQVIsZ0JBQVEsUUFvQ3hCIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiVGVtcGxhdGUuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvYXBwL3NjcmlwdC9zdGF0aW9uZXJ5L1RlbXBsYXRlLnRzIl0sIm5hbWVzIjpbIlRlbXBsYXRlIl0sIm1hcHBpbmdzIjoiOzs7Ozs7OztJQUFBLElBQWlCLFFBQVEsQ0EyQ3hCO0lBM0NELFdBQWlCLFFBQVEsRUFBQyxDQUFDO1FBQ1pBLHdCQUFlQSxHQUN0QkEsOEVBQThFQTtZQUM1RUEsU0FBU0E7WUFDUEEsTUFBTUE7WUFDSkEsV0FBV0E7WUFDWEEsV0FBV0E7WUFDYkEsT0FBT0E7WUFDVEEsVUFBVUE7WUFDVkEseUJBQXlCQTtZQUN6QkEsVUFBVUE7WUFDWkEsVUFBVUEsQ0FBQ0E7UUFFSkEsOEJBQXFCQSxHQUFHQSxVQUFDQSxNQUFNQSxJQUFhQSxPQUFBQSxNQUFNQSxHQUFHQSxNQUFNQSxDQUFDQSxFQUFFQSxHQUFHQSxPQUFPQSxFQUE1QkEsQ0FBNEJBLENBQUFBO1FBRXhFQSw0QkFBbUJBLEdBQUdBLFVBQUNBLEVBQUVBLEVBQUVBLFVBQVVBO1lBQzVDQSxNQUFNQSxDQUFDQSxNQUFNQTtnQkFDSkEsTUFBTUEsR0FBR0EsVUFBVUEsQ0FBQ0EsU0FBU0EsR0FBR0EsT0FBT0E7Z0JBQ3ZDQSxNQUFNQSxHQUFHQSxVQUFVQSxDQUFDQSxLQUFLQSxHQUFHQSxPQUFPQTtnQkFDbkNBLE1BQU1BLEdBQUdBLFVBQVVBLENBQUNBLFFBQVFBLEdBQUdBLE9BQU9BO2dCQUN0Q0EsTUFBTUEsR0FBR0EsVUFBVUEsQ0FBQ0EsUUFBUUEsR0FBR0EsT0FBT0E7Z0JBQ3RDQSw4QkFBOEJBLEdBQUdBLEVBQUVBLEdBQUdBLG9FQUFvRUE7Z0JBQzFHQSw4QkFBOEJBLEdBQUdBLEVBQUVBLEdBQUdBLHFFQUFxRUE7Z0JBQzdHQSxPQUFPQSxDQUFBQTtRQUNsQkEsQ0FBQ0EsQ0FBQUE7UUFFVUEsdUJBQWNBLEdBQVdBLGdFQUFnRUEsQ0FBQ0E7UUFFMUZBLDZCQUFvQkEsR0FDekJBLDRCQUE0QkE7WUFDMUJBLDJDQUEyQ0E7WUFDekNBLHdFQUF3RUE7WUFDMUVBLFFBQVFBO1lBQ1ZBLFFBQVFBLENBQUNBO1FBRUpBLDJCQUFrQkEsR0FBR0EsVUFBQ0EsTUFBTUE7WUFDbkNBLE1BQU1BLENBQUNBLDRCQUE0QkE7Z0JBQ3pCQSwwQ0FBMENBLEdBQUdBLE1BQU1BLENBQUNBLEVBQUVBLEdBQUdBLFVBQVVBO2dCQUNuRUEsMkJBQTJCQTtnQkFDekJBLHFEQUFxREEsR0FBR0EsTUFBTUEsQ0FBQ0EsRUFBRUEsR0FBR0EsS0FBS0E7Z0JBQzNFQSxRQUFRQTtnQkFDVkEsUUFBUUEsQ0FBQ0E7UUFDckJBLENBQUNBLENBQUFBO0lBQ0xBLENBQUNBLEVBM0NnQixRQUFRLEdBQVIsZ0JBQVEsS0FBUixnQkFBUSxRQTJDeEIifQ==
