@@ -43,6 +43,10 @@ $(() => {
         renderIndex();
     });
 
+    $(document).on("click", "#index_stationery", function() {
+        renderIndex();
+    });
+
     $(document).on("click", "#new_stationery", function() {
         renderNew();
     });

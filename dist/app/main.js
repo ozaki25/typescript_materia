@@ -46,6 +46,9 @@
             stationeryList[id].shipment();
             renderIndex();
         });
+        $(document).on("click", "#index_stationery", function () {
+            renderIndex();
+        });
         $(document).on("click", "#new_stationery", function () {
             renderNew();
         });
@@ -89,10 +92,10 @@
                 "</tr>";
         };
         Stationery.prototype.receive = function () {
-            this.quantity += 100;
+            this.quantity += 10;
         };
         Stationery.prototype.shipment = function () {
-            this.quantity -= 100;
+            this.quantity -= 10;
         };
         return Stationery;
     })();
