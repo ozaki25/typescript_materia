@@ -166,8 +166,6 @@
         Template.StationeryTable = "<table id=\"stationeryTable\" class=\"table table-condensed table-striped\">" +
             "<thead>" +
             "<tr>" +
-            "<th></th>" +
-            "<th></th>" +
             "</tr>" +
             "</thead>" +
             "<tbody id=\"contents\">" +
