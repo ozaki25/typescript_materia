@@ -13,18 +13,6 @@ export class Stationery {
         this.location = location;
     }
 
-    valid(): boolean {
-        return !!this.brandName.trim() && !!this.price && !!this.quantity && !!this.location.trim();
-    }
-
-    setDefault(): Stationery {
-        if(!this.brandName.trim()) this.brandName = "";
-        if(!this.price) this.price = 0;
-        if(!this.quantity) this.quantity = 0;
-        if(!this.location.trim()) this.location = "";
-        return this;
-    }
-
     receive(): void {
         this.quantity += 10;
     }

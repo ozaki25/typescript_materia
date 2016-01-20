@@ -41,4 +41,6 @@ export namespace Template {
                   "</div>" +
                 "</div>";
     }
+
+    export let StationeryFormErrorMsg = (msg): string => "<p class=\"help-block\">" + msg + "</p>"
 }

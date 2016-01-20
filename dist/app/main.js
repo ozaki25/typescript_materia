@@ -5,24 +5,18 @@
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "jquery", "./stationery/Stationery", "./stationery/Template", "./stationery/Item"], factory);
+        define(["require", "exports", "jquery", "./stationery/Stationery", "./stationery/Template", "./stationery/Item", "./stationery/Validation"], factory);
     }
 })(function (require, exports) {
     var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
     var Stationery_1 = require("./stationery/Stationery");
     var Template_1 = require("./stationery/Template");
     var Item_1 = require("./stationery/Item");
+    var Validation_1 = require("./stationery/Validation");
     $(function () {
         var stationeryList = [];
         setDefaultStationery();
         renderIndex();
-        function setDefaultStationery() {
-            Item_1.Item.brandNames.forEach(function (brandName) {
-                Item_1.Item.locations.forEach(function (location) {
-                    stationeryList.push(new Stationery_1.Stationery(brandName, 100, 500, location));
-                });
-            });
-        }
         function renderIndex() {
             $("#main").html(Template_1.Template.StationeryTable);
             Item_1.Item.columns.forEach(function (column) {
@@ -32,18 +26,46 @@
                 $("#contents").append(Template_1.Template.StationeryTableRow(index, stationery));
             });
         }
-        function renderNew(stationery) {
+        function renderNew(params) {
             $("#main").html(Template_1.Template.StationeryForm);
             Item_1.Item.columns.forEach(function (item) {
                 $("#stationery_form").append(Template_1.Template.StationeryFormItem(item));
             });
             $("#stationery_form").append(Template_1.Template.StationeryFormSubmit);
-            if (stationery) {
-                $("input[name='brandName']").val(stationery.brandName);
-                $("input[name='price']").val(stationery.price);
-                $("input[name='quantity']").val(stationery.quantity);
-                $("input[name='location']").val(stationery.location);
+            if (params) {
+                Item_1.Item.columns.forEach(function (column) {
+                    if (params[column.en])
+                        addErrorMsg(column.en, params[column.en]["msg"]);
+                    setInputValue(column.en, params[column.en]["value"]);
+                });
             }
+        }
+        function setDefaultStationery() {
+            Item_1.Item.brandNames.forEach(function (brandName) {
+                Item_1.Item.locations.forEach(function (location) {
+                    stationeryList.push(new Stationery_1.Stationery(brandName, 100, 500, location));
+                });
+            });
+        }
+        function addErrorMsg(columnName, msg) {
+            var $input = $("input[name='" + columnName + "']");
+            var $formGroup = $input.parent().parent();
+            if (msg) {
+                $input.after(Template_1.Template.StationeryFormErrorMsg(msg));
+                $formGroup.addClass("has-error");
+            }
+        }
+        function setInputValue(columnName, value) {
+            var $input = $("input[name='" + columnName + "']");
+            $input.val(value);
+        }
+        function getMsgParams(brandName, price, quantity, location) {
+            var params = {};
+            params["brandName"] = (Validation_1.Validation.validString(brandName)) ? { "value": brandName } : { "msg": "文字列を入力して下さい。" };
+            params["price"] = (Validation_1.Validation.validNumber(price)) ? { "value": parseInt(price) } : { "msg": "数値を入力して下さい。" };
+            params["quantity"] = (Validation_1.Validation.validNumber(quantity)) ? { "value": parseInt(quantity) } : { "msg": "数値を入力して下さい。" };
+            params["location"] = (Validation_1.Validation.validString(location)) ? { "value": location } : { "msg": "文字列を入力して下さい。" };
+            return params;
         }
         $(document).on("click", ".receive", function () {
             var id = $(this).data("stationery-id");
@@ -63,23 +85,25 @@
         });
         $(document).on("click", "#submit_stationery", function () {
             var brandName = $("input[name='brandName']").val();
-            var price = parseInt($("input[name='price']").val());
-            var quantity = parseInt($("input[name='quantity']").val());
+            var price = $("input[name='price']").val();
+            var quantity = $("input[name='quantity']").val();
             var location = $("input[name='location']").val();
-            var stationery = new Stationery_1.Stationery(brandName, price, quantity, location);
-            if (stationery.valid()) {
-                stationeryList.push(stationery);
+            var params = getMsgParams(brandName, price, quantity, location);
+            var columnNames = [];
+            Item_1.Item.columns.forEach(function (column) { return columnNames.push(column.en); });
+            if (Validation_1.Validation.valid(params, columnNames)) {
+                stationeryList.push(new Stationery_1.Stationery(brandName, parseInt(price), parseInt(quantity), location));
                 renderIndex();
             }
             else {
-                renderNew(stationery.setDefault());
+                renderNew(params);
             }
         });
     });
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./stationery/Item":2,"./stationery/Stationery":3,"./stationery/Template":4}],2:[function(require,module,exports){
+},{"./stationery/Item":2,"./stationery/Stationery":3,"./stationery/Template":4,"./stationery/Validation":5}],2:[function(require,module,exports){
 (function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
@@ -117,20 +141,6 @@
             this.quantity = quantity;
             this.location = location;
         }
-        Stationery.prototype.valid = function () {
-            return !!this.brandName.trim() && !!this.price && !!this.quantity && !!this.location.trim();
-        };
-        Stationery.prototype.setDefault = function () {
-            if (!this.brandName.trim())
-                this.brandName = "";
-            if (!this.price)
-                this.price = 0;
-            if (!this.quantity)
-                this.quantity = 0;
-            if (!this.location.trim())
-                this.location = "";
-            return this;
-        };
         Stationery.prototype.receive = function () {
             this.quantity += 10;
         };
@@ -188,7 +198,30 @@
                 "</div>" +
                 "</div>";
         };
+        Template.StationeryFormErrorMsg = function (msg) { return "<p class=\"help-block\">" + msg + "</p>"; };
     })(Template = exports.Template || (exports.Template = {}));
+});
+
+},{}],5:[function(require,module,exports){
+(function (factory) {
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        var v = factory(require, exports); if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === 'function' && define.amd) {
+        define(["require", "exports"], factory);
+    }
+})(function (require, exports) {
+    var Validation;
+    (function (Validation) {
+        Validation.validString = function (param) { return !!param.trim(); };
+        Validation.validNumber = function (param) { return Validation.validString(param) && isFinite(param); };
+        Validation.valid = function (params, columnNames) {
+            var valid = true;
+            columnNames.forEach(function (name) { if (!!params[name]["msg"])
+                valid = false; });
+            return valid;
+        };
+    })(Validation = exports.Validation || (exports.Validation = {}));
 });
 
 },{}]},{},[1]);
