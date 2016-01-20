@@ -55,7 +55,7 @@ $(() => {
         $input.val(value);
     }
 
-    function getMsgParams(brandName: string, price: any, quantity: any, location: string) {
+    function getMsgParams(brandName: string, price: string, quantity: string, location: string) {
         var params = {};
         params["brandName"] = (Validation.validString(brandName)) ? {"value": brandName}          : {"msg": "文字列を入力して下さい。"};
         params["price"]     = (Validation.validNumber(price))     ? {"value": parseInt(price)}    : {"msg": "数値を入力して下さい。"};

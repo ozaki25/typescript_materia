@@ -212,7 +212,7 @@
     var Validation;
     (function (Validation) {
         Validation.validString = function (param) { return !!param.trim(); };
-        Validation.validNumber = function (param) { return isFinite(param); };
+        Validation.validNumber = function (param) { return !!param.trim() && isFinite(parseInt(param)); };
         Validation.valid = function (params, columnNames) {
             var valid = true;
             columnNames.forEach(function (name) { if (!!params[name]["msg"])

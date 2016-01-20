@@ -11,11 +11,14 @@ describe("Validation", () => {
     });
 
     describe("validNumber", () => {
-        it("should be return false when give undefined", () => {
-            expect(Validation.validNumber(undefined)).toBe(false);
+        it("should be return false when give blank", () => {
+            expect(Validation.validNumber("")).toBe(false);
         });
-        it("should be return false when give integer", () => {
-            expect(Validation.validNumber(10)).toBe(true);
+        it("should be return false when give string", () => {
+            expect(Validation.validNumber("test")).toBe(false);
+        });
+        it("should be return false when give string of number", () => {
+            expect(Validation.validNumber("10")).toBe(true);
         });
     });
 
