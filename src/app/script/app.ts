@@ -12,17 +12,17 @@ $(() => {
     function renderIndex() {
         $("#main").html(Template.StationeryTable);
         Item.columns.forEach(column => {
-            $("#stationeryTable > thead > tr").append(Template.StationeryTableHeader(column));
+            $("#stationeryTable > thead > tr").append(Template.StationeryTableHeader(column.ja));
         });
         stationeryList.forEach((stationery, index) => {
             $("#contents").append(Template.StationeryTableRow(index, stationery));
         });
     }
 
-    function renderNew(params?) {
+    function renderNew(params?: {}) {
         $("#main").html(Template.StationeryForm);
         Item.columns.forEach(item => {
-            $("#stationery_form").append(Template.StationeryFormItem(item));
+            $("#stationery_form").append(Template.StationeryFormItem(item.ja, item.en));
         });
         $("#stationery_form").append(Template.StationeryFormSubmit);
         if(params) {
@@ -41,7 +41,7 @@ $(() => {
         });
     }
 
-    function addErrorMsg(columnName, msg) {
+    function addErrorMsg(columnName: string, msg: string) {
         var $input = $("input[name='" + columnName + "']");
         var $formGroup = $input.parent().parent();
         if(msg) {
@@ -50,12 +50,12 @@ $(() => {
         }
     }
 
-    function setInputValue(columnName, value) {
+    function setInputValue(columnName: string, value: string) {
         var $input = $("input[name='" + columnName + "']");
         $input.val(value);
     }
 
-    function getMsgParams(brandName, price, quantity, location) {
+    function getMsgParams(brandName: string, price: any, quantity: any, location: string) {
         var params = {};
         params["brandName"] = (Validation.validString(brandName)) ? {"value": brandName}          : {"msg": "文字列を入力して下さい。"};
         params["price"]     = (Validation.validNumber(price))     ? {"value": parseInt(price)}    : {"msg": "数値を入力して下さい。"};
@@ -90,7 +90,7 @@ $(() => {
         var quantity = $("input[name='quantity']").val();
         var location = $("input[name='location']").val();
         var params = getMsgParams(brandName, price, quantity, location);
-        var columnNames = [];
+        var columnNames: string[] = [];
         Item.columns.forEach(column => columnNames.push(column.en));
         if(Validation.valid(params, columnNames)) {
             stationeryList.push(new Stationery(brandName, parseInt(price), parseInt(quantity), location));

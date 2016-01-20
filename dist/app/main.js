@@ -20,7 +20,7 @@
         function renderIndex() {
             $("#main").html(Template_1.Template.StationeryTable);
             Item_1.Item.columns.forEach(function (column) {
-                $("#stationeryTable > thead > tr").append(Template_1.Template.StationeryTableHeader(column));
+                $("#stationeryTable > thead > tr").append(Template_1.Template.StationeryTableHeader(column.ja));
             });
             stationeryList.forEach(function (stationery, index) {
                 $("#contents").append(Template_1.Template.StationeryTableRow(index, stationery));
@@ -29,7 +29,7 @@
         function renderNew(params) {
             $("#main").html(Template_1.Template.StationeryForm);
             Item_1.Item.columns.forEach(function (item) {
-                $("#stationery_form").append(Template_1.Template.StationeryFormItem(item));
+                $("#stationery_form").append(Template_1.Template.StationeryFormItem(item.ja, item.en));
             });
             $("#stationery_form").append(Template_1.Template.StationeryFormSubmit);
             if (params) {
@@ -115,10 +115,10 @@
     var Item;
     (function (Item) {
         Item.columns = [
-            { ja: "商品名", en: "brandName" },
-            { ja: "値段", en: "price" },
-            { ja: "在庫数", en: "quantity" },
-            { ja: "保管場所", en: "location" }
+            { "ja": "商品名", "en": "brandName" },
+            { "ja": "値段", "en": "price" },
+            { "ja": "在庫数", "en": "quantity" },
+            { "ja": "保管場所", "en": "location" }
         ];
         Item.brandNames = ["鉛筆", "ノート", "消しゴム"];
         Item.locations = ["東京", "千葉", "埼玉"];
@@ -171,7 +171,7 @@
             "<tbody id=\"contents\">" +
             "</tbody>" +
             "</table>";
-        Template.StationeryTableHeader = function (column) { return "<th>" + column.ja + "</th>"; };
+        Template.StationeryTableHeader = function (columnName) { return "<th>" + columnName + "</th>"; };
         Template.StationeryTableRow = function (id, stationery) {
             return "<tr>" +
                 "<td>" + stationery.brandName + "</td>" +
@@ -188,11 +188,11 @@
             "<button id=\"submit_stationery\" class=\"btn btn-default\">作成</button>" +
             "</div>" +
             "</div>";
-        Template.StationeryFormItem = function (column) {
+        Template.StationeryFormItem = function (columnNameJa, columnNameEn) {
             return "<div class=\"form-group\">" +
-                "<label class=\"col-sm-2 control-label\">" + column.ja + "</label>" +
+                "<label class=\"col-sm-2 control-label\">" + columnNameJa + "</label>" +
                 "<div class=\"col-sm-10\">" +
-                "<input type=\"text\" class=\"form-control\" name=\"" + column.en + "\">" +
+                "<input type=\"text\" class=\"form-control\" name=\"" + columnNameEn + "\">" +
                 "</div>" +
                 "</div>";
         };
@@ -212,7 +212,7 @@
     var Validation;
     (function (Validation) {
         Validation.validString = function (param) { return !!param.trim(); };
-        Validation.validNumber = function (param) { return param !== "" && isFinite(param); };
+        Validation.validNumber = function (param) { return isFinite(param); };
         Validation.valid = function (params, columnNames) {
             var valid = true;
             columnNames.forEach(function (name) { if (!!params[name]["msg"])

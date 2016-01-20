@@ -1,3 +1,5 @@
+import {Stationery} from "./stationery/Stationery";
+
 export namespace Template {
     export let StationeryTable: string =
         "<table id=\"stationeryTable\" class=\"table table-condensed table-striped\">" +
@@ -9,9 +11,9 @@ export namespace Template {
           "</tbody>" +
         "</table>";
 
-    export let StationeryTableHeader = (column): string => "<th>" + column.ja + "</th>"
+    export let StationeryTableHeader = (columnName: string): string => "<th>" + columnName + "</th>"
 
-    export let StationeryTableRow = (id, stationery): string => {
+    export let StationeryTableRow = (id: number, stationery: Stationery): string => {
         return "<tr>" +
                  "<td>" + stationery.brandName + "</td>" +
                  "<td>" + stationery.price + "</td>" +
@@ -31,14 +33,14 @@ export namespace Template {
             "</div>" +
           "</div>";
 
-    export let StationeryFormItem = (column): string => {
+    export let StationeryFormItem = (columnNameJa: string, columnNameEn: string): string => {
         return "<div class=\"form-group\">" +
-                  "<label class=\"col-sm-2 control-label\">" + column.ja + "</label>" +
+                  "<label class=\"col-sm-2 control-label\">" + columnNameJa + "</label>" +
                   "<div class=\"col-sm-10\">" +
-                    "<input type=\"text\" class=\"form-control\" name=\"" + column.en + "\">" +
+                    "<input type=\"text\" class=\"form-control\" name=\"" + columnNameEn + "\">" +
                   "</div>" +
                 "</div>";
     }
 
-    export let StationeryFormErrorMsg = (msg): string => "<p class=\"help-block\">" + msg + "</p>"
+    export let StationeryFormErrorMsg = (msg: string): string => "<p class=\"help-block\">" + msg + "</p>"
 }

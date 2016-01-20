@@ -8,7 +8,8 @@
         "inlineSourceMap": true,
         "noEmitOnError": true,
         "removeComments": false,
-        "suppressImplicitAnyIndexErrors": true
+        "suppressImplicitAnyIndexErrors": true,
+        "noImplicitAny": true
     },
     "exclude": [
         "node_modules",
